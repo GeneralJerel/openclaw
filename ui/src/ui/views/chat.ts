@@ -98,6 +98,13 @@ export type ChatProps = {
   onSplitRatioChange?: (ratio: number) => void;
   onChatScroll?: (event: Event) => void;
   basePath?: string;
+  /** CopilotKit mode: when true, shows the CopilotKit React island instead of normal chat. */
+  copilotKitMode?: boolean;
+  onCopilotKitModeChange?: (enabled: boolean) => void;
+  /** Gateway URL for the CopilotKit runtime (e.g. "http://localhost:18789"). */
+  gatewayUrl?: string;
+  /** Auth token for the gateway. */
+  gatewayAuthToken?: string;
 };
 
 const COMPACTION_TOAST_DURATION_MS = 5000;
@@ -1156,6 +1163,54 @@ export function renderChat(props: ChatProps) {
     props.onDraftChange(target.value);
   };
 
+  // --- CopilotKit mode ---
+  const copilotKitMode = props.copilotKitMode === true;
+  const copilotKitToggle = props.onCopilotKitModeChange
+    ? html`
+        <button
+          class="btn btn--ghost copilotkit-mode-toggle ${copilotKitMode ? "copilotkit-mode-toggle--active" : ""}"
+          @click=${() => props.onCopilotKitModeChange!(!copilotKitMode)}
+          title=${copilotKitMode ? "Switch to normal chat" : "Switch to CopilotKit assistant"}
+          aria-label=${copilotKitMode ? "Switch to normal chat" : "Switch to CopilotKit assistant"}
+        >
+          ${icons.zap}
+          <span class="copilotkit-mode-toggle__label">Copilot</span>
+        </button>
+      `
+    : nothing;
+
+  // Mount/unmount the React island when toggling CopilotKit mode.
+  // We use a MutationObserver-free approach: mount on ref attach, unmount on toggle-off.
+  if (!copilotKitMode) {
+    // When switching away from CopilotKit mode, unmount the React root.
+    import("../copilotkit/mount.js").then(({ unmountCopilotIsland }) => {
+      unmountCopilotIsland();
+    });
+  }
+
+  const copilotIslandRef = (el: Element | undefined) => {
+    if (!el) {return;}
+    const container = el as HTMLElement;
+    // Avoid double-mounting: check a data attribute on the container.
+    if (container.dataset.ckMounted === "true") {return;}
+    container.dataset.ckMounted = "true";
+    void import("../copilotkit/mount.js").then(({ mountCopilotIsland }) => {
+      void mountCopilotIsland(container, {
+        gatewayUrl: props.gatewayUrl ?? window.location.origin,
+        authToken: props.gatewayAuthToken,
+        callbacks: {
+          onNavigateToSession: (key: string) => {
+            props.onCopilotKitModeChange?.(false);
+            props.onSessionSelect?.(key);
+          },
+          onInstallSkill: (_slug: string) => {
+            // Skill installation is handled server-side by the CopilotKit action.
+          },
+        },
+      });
+    });
+  };
+
   return html`
     <section
       class="card chat"
@@ -1177,6 +1232,10 @@ export function renderChat(props: ChatProps) {
             </button>
           `
         : nothing}
+      ${copilotKitToggle}
+      ${copilotKitMode
+        ? html`<div class="copilotkit-island-container" ${ref(copilotIslandRef)}></div>`
+        : html`
       ${renderSearchBar(requestUpdate)} ${renderPinnedSection(props, pinned, requestUpdate)}
 
       <div class="chat-split-container ${sidebarOpen ? "chat-split-container--open" : ""}">
@@ -1400,6 +1459,7 @@ export function renderChat(props: ChatProps) {
           </div>
         </div>
       </div>
+      `}
     </section>
   `;
 }

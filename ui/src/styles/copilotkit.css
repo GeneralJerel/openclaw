@@ -1,0 +1,394 @@
+/* CopilotKit integration styles for OpenClaw dashboard */
+
+/* --- Mode toggle button --- */
+.copilotkit-mode-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--muted);
+  transition: color 0.15s, background 0.15s;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 10;
+}
+
+.copilotkit-mode-toggle:hover {
+  color: var(--text);
+  background: var(--bg-hover);
+}
+
+.copilotkit-mode-toggle--active {
+  color: var(--accent);
+  background: var(--accent-subtle);
+}
+
+.copilotkit-mode-toggle--active:hover {
+  background: rgba(255, 92, 92, 0.15);
+}
+
+.copilotkit-mode-toggle__label {
+  font-weight: 500;
+}
+
+.copilotkit-mode-toggle svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* --- React island container --- */
+.copilotkit-island-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* --- CopilotKit chat overrides --- */
+.copilotkit-chat-island {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Override CopilotKit's default theme to match OpenClaw */
+.copilotkit-chat-island,
+[data-copilotkit] {
+  --copilot-kit-primary-color: var(--accent, #ff5c5c);
+  --copilot-kit-background-color: var(--card, #161920);
+  --copilot-kit-secondary-color: var(--bg-elevated, #191c24);
+  --copilot-kit-separator-color: var(--border, #1e2028);
+  --copilot-kit-response-button-background-color: var(--bg-hover, #1f2330);
+  --copilot-kit-response-button-color: var(--text, #d4d4d8);
+  font-family: var(--font, inherit);
+  color: var(--text, #d4d4d8);
+  background: transparent;
+}
+
+/* --- Channel Health Cards --- */
+.ck-channel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+  padding: 8px 0;
+}
+
+.ck-channel-card {
+  background: var(--card, #161920);
+  border: 1px solid var(--border, #1e2028);
+  border-radius: 8px;
+  padding: 12px;
+  transition: border-color 0.15s;
+}
+
+.ck-channel-card:hover {
+  border-color: var(--border-strong, #2e3040);
+}
+
+.ck-channel-card__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.ck-channel-card__name {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text-strong, #f4f4f5);
+}
+
+.ck-channel-card__details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ck-channel-card__row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+}
+
+.ck-channel-card__label {
+  color: var(--muted, #838387);
+}
+
+.ck-channel-card__value {
+  color: var(--text, #d4d4d8);
+}
+
+.ck-channel-card__badge {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 1px 6px;
+  font-size: 10px;
+  border-radius: 4px;
+  background: var(--accent-subtle, rgba(255, 92, 92, 0.1));
+  color: var(--accent, #ff5c5c);
+}
+
+/* --- Status dots --- */
+.ck-status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.ck-status-dot--online {
+  background: var(--ok, #22c55e);
+  box-shadow: 0 0 4px var(--ok, #22c55e);
+}
+
+.ck-status-dot--offline {
+  background: var(--destructive, #ef4444);
+}
+
+.ck-status-dot--disabled {
+  background: var(--muted, #838387);
+}
+
+/* --- Skills --- */
+.ck-skills-container {
+  padding: 4px 0;
+}
+
+.ck-skills-section {
+  margin-bottom: 12px;
+}
+
+.ck-section-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted, #838387);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 8px 0;
+}
+
+.ck-skills-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ck-skill-card {
+  background: var(--card, #161920);
+  border: 1px solid var(--border, #1e2028);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.ck-skill-card--marketplace {
+  border-color: var(--accent-subtle, rgba(255, 92, 92, 0.1));
+}
+
+.ck-skill-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.ck-skill-card__name {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text-strong, #f4f4f5);
+}
+
+.ck-skill-card__desc {
+  font-size: 12px;
+  color: var(--muted, #838387);
+  margin: 4px 0;
+  line-height: 1.4;
+}
+
+.ck-skill-card__author {
+  font-size: 11px;
+  color: var(--muted, #838387);
+}
+
+.ck-skill-card__eligibility {
+  font-size: 11px;
+  color: var(--warn, #f59e0b);
+  margin: 4px 0 0 0;
+  padding-left: 16px;
+}
+
+.ck-skill-card__install-btn {
+  margin-top: 8px;
+  padding: 4px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--accent, #ff5c5c);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--accent, #ff5c5c);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.ck-skill-card__install-btn:hover:not(:disabled) {
+  background: var(--accent, #ff5c5c);
+  color: var(--accent-foreground, #fafafa);
+}
+
+.ck-skill-card__install-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* --- Badges --- */
+.ck-badge {
+  display: inline-block;
+  padding: 1px 8px;
+  font-size: 10px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.ck-badge--ok {
+  background: var(--ok-subtle, rgba(34, 197, 94, 0.08));
+  color: var(--ok, #22c55e);
+}
+
+.ck-badge--warn {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--warn, #f59e0b);
+}
+
+.ck-badge--muted {
+  background: var(--bg-hover, #1f2330);
+  color: var(--muted, #838387);
+}
+
+/* --- Usage Sparklines --- */
+.ck-usage-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+  padding: 8px 0;
+}
+
+.ck-stat-card {
+  background: var(--card, #161920);
+  border: 1px solid var(--border, #1e2028);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.ck-stat-card__label {
+  font-size: 11px;
+  color: var(--muted, #838387);
+  margin-bottom: 4px;
+}
+
+.ck-stat-card__value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-strong, #f4f4f5);
+  margin-bottom: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ck-sparkline {
+  display: block;
+  width: 100%;
+  height: 40px;
+}
+
+.ck-sparkline-empty {
+  color: var(--muted, #838387);
+  font-size: 11px;
+}
+
+/* --- Session Inspector --- */
+.ck-sessions-table {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border, #1e2028);
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 12px;
+}
+
+.ck-sessions-table__header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--bg-elevated, #191c24);
+  color: var(--muted, #838387);
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ck-sessions-table__row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 8px;
+  padding: 8px 12px;
+  border-top: 1px solid var(--border, #1e2028);
+  cursor: pointer;
+  transition: background 0.1s;
+  align-items: center;
+}
+
+.ck-sessions-table__row:hover {
+  background: var(--bg-hover, #1f2330);
+}
+
+.ck-sessions-table__cell {
+  color: var(--text, #d4d4d8);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ck-sessions-table__cell--name {
+  font-weight: 500;
+  color: var(--text-strong, #f4f4f5);
+}
+
+/* --- Shared states --- */
+.ck-empty-state {
+  padding: 24px;
+  text-align: center;
+  color: var(--muted, #838387);
+  font-size: 13px;
+}
+
+/* --- Skeleton loading --- */
+.ck-channel-card--skeleton,
+.ck-skill-card--skeleton,
+.ck-stat-card--skeleton,
+.ck-sessions-table__row--skeleton {
+  pointer-events: none;
+}
+
+.ck-skeleton-line {
+  height: 12px;
+  border-radius: 4px;
+  background: var(--bg-hover, #1f2330);
+  animation: ck-skeleton-pulse 1.5s ease-in-out infinite;
+  margin-bottom: 8px;
+}
+
+.ck-skeleton-line--short {
+  width: 60%;
+}
+
+@keyframes ck-skeleton-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}

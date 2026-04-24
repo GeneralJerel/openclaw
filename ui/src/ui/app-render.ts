@@ -1,6 +1,21 @@
 import { html, nothing } from "lit";
 import { t } from "../i18n/index.ts";
 import { getSafeLocalStorage } from "../local-storage.ts";
+
+/** Convert a gateway WebSocket URL (ws:// or wss://) to an HTTP URL for the CopilotKit runtime. */
+function deriveHttpUrlFromGatewayWs(wsUrl: string): string {
+  try {
+    const url = new URL(wsUrl, window.location.href);
+    url.protocol = url.protocol === "wss:" ? "https:" : "http:";
+    // Strip the /ws path if present (gateway HTTP is at root)
+    if (url.pathname === "/ws" || url.pathname === "/ws/") {
+      url.pathname = "/";
+    }
+    return url.origin;
+  } catch {
+    return window.location.origin;
+  }
+}
 import { refreshChatAvatar } from "./app-chat.ts";
 import { renderUsageTab } from "./app-render-usage-tab.ts";
 import {
@@ -1657,6 +1672,12 @@ export function renderApp(state: AppViewState) {
               assistantName: state.assistantName,
               assistantAvatar: state.assistantAvatar,
               basePath: state.basePath ?? "",
+              copilotKitMode: state.copilotKitMode,
+              onCopilotKitModeChange: (enabled: boolean) => {
+                state.copilotKitMode = enabled;
+              },
+              gatewayUrl: deriveHttpUrlFromGatewayWs(state.settings.gatewayUrl),
+              gatewayAuthToken: state.settings.token,
             })
           : nothing}
         ${state.tab === "config"

@@ -1,5 +1,6 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -40,6 +41,9 @@ export default defineConfig(() => {
       strictPort: true,
     },
     plugins: [
+      // React support for CopilotKit island components (.tsx files).
+      // Lit .ts files are unaffected — the plugin only transforms JSX.
+      react({ include: "**/*.tsx" }),
       {
         name: "control-ui-dev-stubs",
         configureServer(server) {

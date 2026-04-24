@@ -1321,6 +1321,7 @@
     "@aws/bedrock-token-generator": "^1.1.0",
     "@buape/carbon": "0.14.0",
     "@clack/prompts": "^1.2.0",
+    "@copilotkit/runtime": "^1.8.0",
     "@google/genai": "^1.48.0",
     "@grammyjs/runner": "^2.0.3",
     "@grammyjs/transformer-throttler": "^1.2.1",
